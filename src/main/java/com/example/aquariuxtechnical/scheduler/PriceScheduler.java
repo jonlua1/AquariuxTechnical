@@ -17,8 +17,8 @@ public class PriceScheduler {
     @Scheduled(fixedRate = 10000)
     public void updatePrices(){
         logger.info("Scheduler triggered");
-        priceFetcher.fetchPrices("ETHUSDT");
-        priceFetcher.fetchPrices("BTCUSDT");
+        priceFetcher.fetchAndStoreBestPrices("ETHUSDT");
+        priceFetcher.fetchAndStoreBestPrices("BTCUSDT");
     }
 
 }
