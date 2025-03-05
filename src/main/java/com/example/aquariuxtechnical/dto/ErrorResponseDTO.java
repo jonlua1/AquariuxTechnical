@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class ErrorResponse {
+public class ErrorResponseDTO {
     private String message;
 
     private String details;
@@ -17,7 +17,7 @@ public class ErrorResponse {
 
     private HttpStatus status;
 
-    public static ErrorResponse create(String message, String details, HttpStatus status) {
-        return new ErrorResponse(message, details, LocalDateTime.now(), status);
+    public static ErrorResponseDTO create(String message, String details, HttpStatus status) {
+        return new ErrorResponseDTO(message, details, LocalDateTime.now(), status);
     }
 }

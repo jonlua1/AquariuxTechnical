@@ -11,6 +11,6 @@ import java.util.List;
 //}
 
 @Data
-public class HuobiPriceResponse {
-    private List<HuobiTicker> data;
+public class HuobiPriceResponseDTO {
+    private List<HuobiTickerDTO> data;
 }

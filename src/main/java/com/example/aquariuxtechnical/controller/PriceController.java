@@ -1,6 +1,6 @@
 package com.example.aquariuxtechnical.controller;
 
-import com.example.aquariuxtechnical.dto.ErrorResponse;
+import com.example.aquariuxtechnical.dto.ErrorResponseDTO;
 import com.example.aquariuxtechnical.entity.CryptoPrice;
 import com.example.aquariuxtechnical.exception.PriceNotFoundException;
 import com.example.aquariuxtechnical.service.CryptoPriceService;
@@ -23,9 +23,8 @@ public class PriceController {
         try {
             CryptoPrice price = priceService.findBySymbol(symbol.toUpperCase());
             return ResponseEntity.ok(price);
-        }
-        catch (PriceNotFoundException e) {
-            ErrorResponse errorResponse = ErrorResponse.create(
+        } catch (PriceNotFoundException e) {
+            ErrorResponseDTO errorResponse = ErrorResponseDTO.create(
                     "Price Not Available",
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);

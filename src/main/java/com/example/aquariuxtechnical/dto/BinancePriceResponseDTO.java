@@ -11,7 +11,7 @@ import lombok.Data;
 //}
 
 @Data
-public class BinancePriceResponse {
+public class BinancePriceResponseDTO {
     private String symbol;
     private double bidPrice;
     private double askPrice;

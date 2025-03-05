@@ -18,7 +18,7 @@ import lombok.Data;
 //}
 
 @Data
-public class HuobiTicker {
+public class HuobiTickerDTO {
     private String symbol;
     private double bid;
     private double ask;

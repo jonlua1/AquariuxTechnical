@@ -1,8 +1,8 @@
 package com.example.aquariuxtechnical.service;
 
-import com.example.aquariuxtechnical.dto.BinancePriceResponse;
-import com.example.aquariuxtechnical.dto.HuobiPriceResponse;
-import com.example.aquariuxtechnical.dto.HuobiTicker;
+import com.example.aquariuxtechnical.dto.BinancePriceResponseDTO;
+import com.example.aquariuxtechnical.dto.HuobiPriceResponseDTO;
+import com.example.aquariuxtechnical.dto.HuobiTickerDTO;
 import com.example.aquariuxtechnical.entity.CryptoPrice;
 import com.example.aquariuxtechnical.repository.CryptoPriceRepository;
 import org.slf4j.Logger;
@@ -36,10 +36,10 @@ public class PriceFetcher {
 
         try {
             // Fetch prices from Binance
-            ResponseEntity<BinancePriceResponse[]> binanceResponse = template.getForEntity(BINANCE_URL, BinancePriceResponse[].class);
+            ResponseEntity<BinancePriceResponseDTO[]> binanceResponse = template.getForEntity(BINANCE_URL, BinancePriceResponseDTO[].class);
 
             if (binanceResponse.getBody() != null) {
-                for (BinancePriceResponse price: binanceResponse.getBody()) {
+                for (BinancePriceResponseDTO price: binanceResponse.getBody()) {
                     if (price.getSymbol().equalsIgnoreCase(symbol)) {
                         logger.debug("Binance {} bid price: {}, ask price: {}", symbol, price.getBidPrice(), price.getAskPrice());
                         bestBid = Math.max(bestBid, price.getBidPrice());
@@ -49,9 +49,9 @@ public class PriceFetcher {
             }
 
             // Fetch prices from Huobi
-            ResponseEntity<HuobiPriceResponse> huobiResponse = template.getForEntity(HUOBI_URL, HuobiPriceResponse.class);
+            ResponseEntity<HuobiPriceResponseDTO> huobiResponse = template.getForEntity(HUOBI_URL, HuobiPriceResponseDTO.class);
             if (huobiResponse.getBody() != null && huobiResponse.getBody().getData() != null) {
-                for (HuobiTicker ticker: huobiResponse.getBody().getData()) {
+                for (HuobiTickerDTO ticker: huobiResponse.getBody().getData()) {
                     if (ticker.getSymbol().equalsIgnoreCase(symbol)) {
                         logger.debug("Huobi {} bid price: {}, ask price: {}", symbol, ticker.getBid(), ticker.getAsk());
                         bestBid = Math.max(bestBid, ticker.getBid());
