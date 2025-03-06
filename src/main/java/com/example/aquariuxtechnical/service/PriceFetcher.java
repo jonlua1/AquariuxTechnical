@@ -5,8 +5,7 @@ import com.example.aquariuxtechnical.dto.HuobiPriceResponseDTO;
 import com.example.aquariuxtechnical.dto.HuobiTickerDTO;
 import com.example.aquariuxtechnical.entity.CryptoPrice;
 import com.example.aquariuxtechnical.repository.CryptoPriceRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,10 +14,9 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class PriceFetcher {
-    private static final Logger logger = LoggerFactory.getLogger(PriceFetcher.class);
-
     private static final String BINANCE_URL = "https://api.binance.com/api/v3/ticker/bookTicker";
     private static final String HUOBI_URL = "https://api.huobi.pro/market/tickers";
 
@@ -29,7 +27,7 @@ public class PriceFetcher {
     private CryptoPriceRepository priceRepository;
 
     public void fetchAndStoreBestPrices(String symbol) {
-        logger.info("Fetching price for {}", symbol);
+        log.info("Fetching price for {}", symbol);
 
         double bestBid = 0.0;
         double bestAsk = Double.MAX_VALUE;
@@ -41,7 +39,7 @@ public class PriceFetcher {
             if (binanceResponse.getBody() != null) {
                 for (BinancePriceResponseDTO price: binanceResponse.getBody()) {
                     if (price.getSymbol().equalsIgnoreCase(symbol)) {
-                        logger.debug("Binance {} bid price: {}, ask price: {}", symbol, price.getBidPrice(), price.getAskPrice());
+                        log.debug("Binance {} bid price: {}, ask price: {}", symbol, price.getBidPrice(), price.getAskPrice());
                         bestBid = Math.max(bestBid, price.getBidPrice());
                         bestAsk = Math.min(bestAsk, price.getAskPrice());
                     }
@@ -53,7 +51,7 @@ public class PriceFetcher {
             if (huobiResponse.getBody() != null && huobiResponse.getBody().getData() != null) {
                 for (HuobiTickerDTO ticker: huobiResponse.getBody().getData()) {
                     if (ticker.getSymbol().equalsIgnoreCase(symbol)) {
-                        logger.debug("Huobi {} bid price: {}, ask price: {}", symbol, ticker.getBid(), ticker.getAsk());
+                        log.debug("Huobi {} bid price: {}, ask price: {}", symbol, ticker.getBid(), ticker.getAsk());
                         bestBid = Math.max(bestBid, ticker.getBid());
                         bestAsk = Math.min(bestAsk, ticker.getAsk());
                     }
@@ -68,10 +66,10 @@ public class PriceFetcher {
             price.setUpdatedAt(LocalDateTime.now());
 
             priceRepository.save(price);
-            logger.info("Updated price for {}: Bid: {}, Ask: {}", symbol, bestBid, bestAsk);
+            log.info("Updated price for {}: Bid: {}, Ask: {}", symbol, bestBid, bestAsk);
         }
         catch (Exception e) {
-            logger.error("Error fetching price for {}: {}", symbol, e.getMessage());
+            log.error("Error fetching price for {}: {}", symbol, e.getMessage());
         }
     }
 }
