@@ -15,7 +15,7 @@ public class WalletController {
     private WalletService walletService;
 
     @GetMapping
-    public ResponseEntity<?> getUserWallets(@RequestParam long userId) {
+    public ResponseEntity<?> getUserWallets(@RequestParam Long userId) {
         return ResponseEntity.ok(walletService.getUserWallets(userId));
     }
 }

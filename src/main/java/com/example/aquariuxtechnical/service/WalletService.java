@@ -14,7 +14,7 @@ public class WalletService {
     @Autowired
     private UserWalletRepository walletRepository;
 
-    public List<UserWalletDTO> getUserWallets(long userId) {
+    public List<UserWalletDTO> getUserWallets(Long userId) {
         List<UserWallet> wallets = walletRepository.findByUserId(userId);
 
         return wallets.stream()
