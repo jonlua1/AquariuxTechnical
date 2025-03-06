@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/trade")
 public class TradeController {
@@ -24,4 +26,8 @@ public class TradeController {
         }
     }
 
+    @GetMapping("/history")
+    public List<TradeTransaction> getUserTradingHistory(@RequestParam Long userId) {
+        return tradeService.getUserTradingHistory(userId);
+    }
 }

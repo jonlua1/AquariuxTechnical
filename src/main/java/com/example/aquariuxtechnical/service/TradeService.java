@@ -10,9 +10,11 @@ import com.example.aquariuxtechnical.repository.TradeTransactionRepository;
 import com.example.aquariuxtechnical.repository.UserWalletRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class TradeService {
@@ -77,5 +79,9 @@ public class TradeService {
         transaction.setTotalCost(totalValue);
 
         return transactionRepository.save(transaction);
+    }
+
+    public List<TradeTransaction> getUserTradingHistory(Long userId) {
+        return transactionRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "timestamp"));
     }
 }
